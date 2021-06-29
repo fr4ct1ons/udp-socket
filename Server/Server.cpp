@@ -39,6 +39,7 @@ int main()
 	
 	while (true)
 	{
+		//Recebe do cliente 1 a mensagem
 		int bytesIn = recvfrom(skt, buffer, 1024, 0, (sockaddr*)&client, &clientLength);
 		if (bytesIn == SOCKET_ERROR)
 		{
@@ -49,8 +50,11 @@ int main()
 
 		inet_ntop(AF_INET, &client.sin_addr, clientIP, 256);
 
+		//Exibe mensagem enviada pelo cliente 1
 		std::cout << "Message received from " << clientIP << ": " << buffer << std::endl;
 		
+
+		//Envia mensagem para o cliente 2
 		SOCKET skt2 = socket(AF_INET, SOCK_DGRAM, 0);
 		sockaddr_in clientInfo;
 
@@ -68,7 +72,7 @@ int main()
 		}
 		else
 		{
-			std::cout << "Sent message back" << std::endl;
+			std::cout << "Sent message to Client 2" << std::endl;
 		}
 		closesocket(skt2);
 

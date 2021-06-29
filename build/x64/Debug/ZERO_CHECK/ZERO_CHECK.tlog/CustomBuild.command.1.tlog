@@ -1,0 +1,10 @@
+^D:\GITHUB\UDP-SOCKET\BUILD\CMAKEFILES\0B1C43DC371C8A2F0D1D7438B746DCE6\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SD:/GitHub/udp-socket -BD:/GitHub/udp-socket/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/GitHub/udp-socket/build/UDP Socket.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
