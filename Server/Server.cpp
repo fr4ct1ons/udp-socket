@@ -18,6 +18,7 @@ int main()
 	}
 
 	SOCKET skt = socket(AF_INET, SOCK_DGRAM, 0);
+	SOCKET skt2 = socket(AF_INET, SOCK_DGRAM, 0);
 	sockaddr_in serverHint;
 	serverHint.sin_addr.S_un.S_addr = ADDR_ANY;
 	serverHint.sin_family = AF_INET;
@@ -50,6 +51,31 @@ int main()
 		inet_ntop(AF_INET, &client.sin_addr, clientIP, 256);
 
 		std::cout << "Message received from " << clientIP << ": " << buffer << std::endl;
+		
+		sockaddr_in clientInfo;
+
+		clientInfo.sin_family = AF_INET;
+		clientInfo.sin_port = htons(55000);
+
+		inet_pton(AF_INET, clientIP, &clientInfo.sin_addr);
+
+		if (bind(skt2, (sockaddr*)&clientInfo, sizeof(clientInfo)) == SOCKET_ERROR)
+		{
+			std::cout << "ERROR BINDING SOCKET - error: " << WSAGetLastError() << std::endl;
+			return 2;
+		}
+
+		int sendOk = sendto(skt, buffer, strlen(buffer), 0, (sockaddr*)&clientInfo, sizeof(clientInfo));
+
+		if (sendOk == SOCKET_ERROR)
+		{
+			std::cout << "ERROR SENDING MESSAGE - error: " << WSAGetLastError() << std::endl;
+		}
+		else
+		{
+			std::cout << "Sent message back" << std::endl;
+		}
+
 	}
 
 	closesocket(skt);
