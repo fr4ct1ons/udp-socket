@@ -53,6 +53,28 @@ int main(int argc, char* argv[])
 		std::cout << "Cliente 1: " << buffer << std::endl;
 	}
 
+	std::string msg = "";
+
+	if (argc > 1)
+	{
+		msg = argv[1];
+	}
+	else
+	{
+		msg = "Plmdds homi, a pandemia num acabou";
+	}
+
+	int sendOk = sendto(out2, msg.c_str(), msg.size() + 1, 0, (sockaddr*)&serverHint, sizeof(serverHint));
+
+	if (sendOk == SOCKET_ERROR)
+	{
+		std::cout << "ERROR SENDING MESSAGE - error: " << WSAGetLastError() << std::endl;
+	}
+	else
+	{
+		std::cout << "Sent message " << msg << std::endl;
+	}
+
 	closesocket(out2);
 
 	//Shutdown

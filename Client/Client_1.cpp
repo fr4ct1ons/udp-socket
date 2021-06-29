@@ -18,12 +18,16 @@ int main(int argc, char* argv[])
 
 	sockaddr_in serverHint;
 
+	serverHint.sin_addr.S_un.S_addr = ADDR_ANY;
 	serverHint.sin_family = AF_INET;
 	serverHint.sin_port = htons(54000);
 
 	inet_pton(AF_INET, "127.0.0.1", &serverHint.sin_addr);
 
 	SOCKET out = socket(AF_INET, SOCK_DGRAM, 0);
+
+	int serverLength = sizeof(serverHint);
+	char* buffer = new char[1024]();
 
 	std::string msg = "";
 
@@ -47,6 +51,26 @@ int main(int argc, char* argv[])
 		std::cout << "Sent message " << msg << std::endl;
 	}
 
+	if (bind(out, (sockaddr*)&serverHint, serverLength) == SOCKET_ERROR)
+	{
+		std::cout << "ERROR BINDING SOCKET - error: " << WSAGetLastError() << std::endl;
+		return 2;
+	}
+	else
+	{
+		std::cout << "Second socket success" << std::endl;
+	}
+
+	int bytesIn = recvfrom(out, buffer, 1024, 0, (sockaddr*)&serverHint, &serverLength);
+
+	if (bytesIn == SOCKET_ERROR)
+	{
+		std::cout << "ERROR RECEIVING MESSAGE - error: " << WSAGetLastError() << std::endl;
+	}
+	else
+	{
+		std::cout << "Cliente 2: " << buffer << std::endl;
+	}
 	
 	closesocket(out);
 
