@@ -64,6 +64,10 @@ int main(int argc, char* argv[])
 		std::cout << "ERROR BINDING SOCKET - error: " << WSAGetLastError() << std::endl;
 		return 2;
 	}
+	else
+	{
+		std::cout << "Second socket success" << std::endl;
+	}
 
 	int bytesIn = recvfrom(out2, buf, 1024, 0, (sockaddr*)&clientHint, &serverLength);
 
